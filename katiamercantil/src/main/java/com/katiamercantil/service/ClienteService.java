@@ -22,34 +22,34 @@ import com.katiamercantil.repository.EnderecoRepository;
 
 @Service
 public class ClienteService {
-	
+
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
+
 	@Autowired
 	private EnderecoRepository enderecoRepository;
-	
-	public ResponseEntity<Object> cadastrarCliente(ClienteDTO clienteDTO){
+
+	public ResponseEntity<Object> cadastrarCliente(ClienteDTO clienteDTO) {
 		var cliente = new Cliente();
 		var endereco = new Endereco();
 		RestTemplate restTemplate = new RestTemplate();
-		String uri = "http://viacep.com.br/ws/"+clienteDTO.getCep()+"/json/";
+		String uri = "http://viacep.com.br/ws/" + clienteDTO.getCep() + "/json/";
 		Map<String, String> params = new HashMap<String, String>();
 		EnderecoDTO enderecoDTO = restTemplate.getForObject(uri, EnderecoDTO.class, params);
 		BeanUtils.copyProperties(clienteDTO, cliente);
 		BeanUtils.copyProperties(enderecoDTO, endereco);
 		endereco.setComplemento(clienteDTO.getComplemento());
-		endereco.setNumero(clienteDTO.getNumero());	
+		endereco.setNumero(clienteDTO.getNumero());
 		cliente.setEndereco(endereco);
 		cliente.setDataRegistro(LocalDateTime.now(ZoneId.of("UTC")));
 		enderecoRepository.save(endereco);
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
 	}
-	
-	public ResponseEntity<List<Cliente>> listarClientes(){
+
+	public ResponseEntity<List<Cliente>> listarClientes() {
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.findAll());
 	}
-	
+
 	public void deletarCliente(Long id) {
 		clienteRepository.deleteById(id);
 	}
