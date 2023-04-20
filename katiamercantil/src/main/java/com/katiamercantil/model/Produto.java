@@ -33,10 +33,16 @@ public class Produto {
 	
 	private Float quantidade;
 	
-	private String marca;
+	private Double precoCusto;
 	
-	private int prateleira;
+	private Double precoVenda;
+	
+	private String marca;
 	
 	@ManyToOne
 	private Departamento departamento;
+	
+	private Long prateleira;
+	
+	
 }
