@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,26 @@ public class ClienteService {
 	}
 
 	public ResponseEntity<Cliente> atualizarCliente(Long id, ClienteDTO clienteDTO){
-		var cliente = clienteRepository.findById(id).get();
-		BeanUtils.copyProperties(clienteDTO, cliente);
+		Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+		var cliente = clienteOptional.get();
+		cliente.setNome(clienteDTO.getNome());
+		cliente.setSobrenome(clienteDTO.getSobrenome());
+		cliente.setCpfCnpj(clienteDTO.getCpfCnpj());
+		cliente.setSexo(clienteDTO.getSexo());
+		cliente.setEmail(clienteDTO.getEmail());
+		cliente.setSenha(clienteDTO.getSenha());
+		cliente.setTelefone(clienteDTO.getTelefone());
+		cliente.setStatus(clienteDTO.getStatus());
+		
+		Optional<Endereco> enderecoOptional = enderecoRepository.findById(id);
+		var endereco = enderecoOptional.get();
+		RestTemplate restTemplate = new RestTemplate();
+		String uri = "http://viacep.com.br/ws/" + clienteDTO.getCep() + "/json/";
+		Map<String, String> params = new HashMap<String, String>();
+		EnderecoDTO enderecoDTO = restTemplate.getForObject(uri, EnderecoDTO.class, params);
+		BeanUtils.copyProperties(enderecoDTO, endereco);
+		enderecoRepository.save(endereco);
+		
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
 	}
 	
