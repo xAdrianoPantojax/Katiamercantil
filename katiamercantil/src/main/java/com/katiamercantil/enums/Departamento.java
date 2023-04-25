@@ -1,0 +1,9 @@
+package com.katiamercantil.enums;
+
+public enum Departamento {
+	ALIMENTOS, PRODUTOS_DE_LIMPEZA,
+	PRODUTOS_DE_HIGIENE_PESSOAL, 
+	BEBIDAS_SUCOS, 
+	PRODUTOS_BAZAR_PAPELARIA,
+	UTILIDADES_DOMESTICAS;
+}

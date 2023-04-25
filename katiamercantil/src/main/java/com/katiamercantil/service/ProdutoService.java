@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.katiamercantil.dto.ProdutoDTO;
-import com.katiamercantil.model.Cliente;
 import com.katiamercantil.model.Produto;
 import com.katiamercantil.repository.ProdutoRepository;
 
