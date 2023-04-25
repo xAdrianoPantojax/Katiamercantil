@@ -46,6 +46,12 @@ public class ClienteService {
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
 	}
 
+	public ResponseEntity<Cliente> atualizarCliente(Long id, ClienteDTO clienteDTO){
+		var cliente = clienteRepository.findById(id).get();
+		BeanUtils.copyProperties(clienteDTO, cliente);
+		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
+	}
+	
 	public ResponseEntity<List<Cliente>> listarClientes() {
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.findAll());
 	}

@@ -1,6 +1,6 @@
 package com.katiamercantil.dto;
 
-import com.katiamercantil.model.Departamento;
+import com.katiamercantil.enums.Departamento;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
