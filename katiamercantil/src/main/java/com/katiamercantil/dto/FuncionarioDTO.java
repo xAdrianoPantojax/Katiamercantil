@@ -1,27 +1,22 @@
-package com.katiamercantil.model;
+package com.katiamercantil.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
+import com.katiamercantil.model.Endereco;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-@Entity
-public class Funcionario {
+@AllArgsConstructor
+public class FuncionarioDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_USUARIO")
-	private Long id;
-	
 	private String nome;
 	
 	private String sobrenome;
@@ -54,6 +49,12 @@ public class Funcionario {
 	
 	private Boolean administrador;
 	
-	@Embedded
+	private String cep;
+	
+	private String numero;
+	
+	private String complemento;
+	
+	@OneToOne
 	private Endereco endereco;
 }
