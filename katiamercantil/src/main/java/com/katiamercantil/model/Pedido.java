@@ -21,7 +21,6 @@ public class Pedido {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_USUARIO")
 	private int id;
 	
 	private int numPedido;

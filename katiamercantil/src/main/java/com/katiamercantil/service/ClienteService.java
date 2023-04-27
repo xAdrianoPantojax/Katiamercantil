@@ -19,16 +19,12 @@ import com.katiamercantil.dto.EnderecoDTO;
 import com.katiamercantil.model.Cliente;
 import com.katiamercantil.model.Endereco;
 import com.katiamercantil.repository.ClienteRepository;
-import com.katiamercantil.repository.EnderecoRepository;
 
 @Service
 public class ClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
-
-	@Autowired
-	private EnderecoRepository enderecoRepository;
 
 	public ResponseEntity<Object> cadastrarCliente(ClienteDTO clienteDTO) {
 		var cliente = new Cliente();
@@ -43,13 +39,13 @@ public class ClienteService {
 		endereco.setNumero(clienteDTO.getNumero());
 		cliente.setEndereco(endereco);
 		cliente.setDataRegistro(LocalDateTime.now(ZoneId.of("UTC")));
-		enderecoRepository.save(endereco);
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
 	}
 
-	public ResponseEntity<Cliente> atualizarCliente(Long id, ClienteDTO clienteDTO){
+	public ResponseEntity<Cliente> atualizarCliente(Long id, ClienteDTO clienteDTO) {
 		Optional<Cliente> clienteOptional = clienteRepository.findById(id);
 		var cliente = clienteOptional.get();
+		var endereco = new Endereco();
 		cliente.setNome(clienteDTO.getNome());
 		cliente.setSobrenome(clienteDTO.getSobrenome());
 		cliente.setCpfCnpj(clienteDTO.getCpfCnpj());
@@ -58,19 +54,17 @@ public class ClienteService {
 		cliente.setSenha(clienteDTO.getSenha());
 		cliente.setTelefone(clienteDTO.getTelefone());
 		cliente.setStatus(clienteDTO.getStatus());
-		
-		Optional<Endereco> enderecoOptional = enderecoRepository.findById(id);
-		var endereco = enderecoOptional.get();
 		RestTemplate restTemplate = new RestTemplate();
 		String uri = "http://viacep.com.br/ws/" + clienteDTO.getCep() + "/json/";
 		Map<String, String> params = new HashMap<String, String>();
 		EnderecoDTO enderecoDTO = restTemplate.getForObject(uri, EnderecoDTO.class, params);
 		BeanUtils.copyProperties(enderecoDTO, endereco);
-		enderecoRepository.save(endereco);
-		
+		endereco.setComplemento(clienteDTO.getComplemento());
+		endereco.setNumero(clienteDTO.getNumero());
+		cliente.setEndereco(endereco);
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
 	}
-	
+
 	public ResponseEntity<List<Cliente>> listarClientes() {
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.findAll());
 	}
