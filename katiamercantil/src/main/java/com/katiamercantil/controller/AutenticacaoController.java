@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.katiamercantil.dto.ClienteDTO;
+import com.katiamercantil.model.Cliente;
+import com.katiamercantil.security.DadosTokenJWTDTO;
+import com.katiamercantil.security.TokenService;
 
 @RestController
 @RequestMapping("/login")
@@ -18,10 +21,15 @@ public class AutenticacaoController {
 	@Autowired
 	private AuthenticationManager manager;
 
+	@Autowired
+	private TokenService tokenService;
+	
 	@PostMapping
 	public ResponseEntity efetuarLogin(@RequestBody ClienteDTO dados) {
-		var token = new UsernamePasswordAuthenticationToken(dados.getEmail(), dados.getSenha());
-		var authentication = manager.authenticate(token);
-		return ResponseEntity.ok().build();
+		var authenticationToken = new UsernamePasswordAuthenticationToken(dados.getEmail(), dados.getSenha());
+		var authentication = manager.authenticate(authenticationToken);
+		
+		var tokenJWT = tokenService.gerarToken((Cliente) authentication.getPrincipal());
+		return ResponseEntity.ok(new DadosTokenJWTDTO(tokenJWT));
 	}
 }
