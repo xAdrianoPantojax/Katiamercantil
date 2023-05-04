@@ -68,6 +68,12 @@ public class ClienteService {
 	public ResponseEntity<List<Cliente>> listarClientes() {
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.findAll());
 	}
+	
+	public ResponseEntity<Cliente> buscarClienteById(Long id) {
+		Optional<Cliente> cliente = clienteRepository.findById(id);
+			return new ResponseEntity<Cliente>(cliente.get(), HttpStatus.OK);
+		
+	}
 
 	public void deletarCliente(Long id) {
 		clienteRepository.deleteById(id);

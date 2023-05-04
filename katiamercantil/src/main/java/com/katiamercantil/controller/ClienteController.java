@@ -39,6 +39,11 @@ public class ClienteController {
 		return clienteService.listarClientes();
 	}
 	
+	@GetMapping("/buscarporid/{id}")
+	public ResponseEntity<Cliente> buscarClienteById(@PathVariable("id")Long id){
+		return clienteService.buscarClienteById(id);
+	}
+	
 	@DeleteMapping("/deletar/{id}")
 	public void deletarCliente(@PathVariable("id") Long id) {
 		clienteService.deletarCliente(id);
