@@ -1,7 +1,13 @@
 package com.katiamercantil.model;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -16,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Cliente {
+public class Cliente implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +50,45 @@ public class Cliente {
 	
 	@Embedded
 	private Endereco endereco;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+	}
+
+	@Override
+	public String getPassword() {
+		return senha;
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		
+		return true;
+	}
 	
 	
 }
