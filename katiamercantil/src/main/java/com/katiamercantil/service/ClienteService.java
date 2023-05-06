@@ -2,9 +2,7 @@ package com.katiamercantil.service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
@@ -12,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.katiamercantil.dto.ClienteDTO;
-import com.katiamercantil.dto.EnderecoDTO;
 import com.katiamercantil.model.Cliente;
 import com.katiamercantil.model.Endereco;
 import com.katiamercantil.repository.ClienteRepository;
@@ -29,15 +25,8 @@ public class ClienteService {
 	public ResponseEntity<Object> cadastrarCliente(ClienteDTO clienteDTO) {
 		var cliente = new Cliente();
 		var endereco = new Endereco();
-		RestTemplate restTemplate = new RestTemplate();
-		String uri = "http://viacep.com.br/ws/" + clienteDTO.getCep() + "/json/";
-		Map<String, String> params = new HashMap<String, String>();
-		EnderecoDTO enderecoDTO = restTemplate.getForObject(uri, EnderecoDTO.class, params);
 		BeanUtils.copyProperties(clienteDTO, cliente);
-		BeanUtils.copyProperties(enderecoDTO, endereco);
-		endereco.setComplemento(clienteDTO.getComplemento());
-		endereco.setNumero(clienteDTO.getNumero());
-		cliente.setEndereco(endereco);
+		BeanUtils.copyProperties(clienteDTO.getEndereco(), endereco);
 		cliente.setDataRegistro(LocalDateTime.now(ZoneId.of("UTC")));
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
 	}
@@ -54,14 +43,13 @@ public class ClienteService {
 		cliente.setSenha(clienteDTO.getSenha());
 		cliente.setTelefone(clienteDTO.getTelefone());
 		cliente.setStatus(clienteDTO.getStatus());
-		RestTemplate restTemplate = new RestTemplate();
-		String uri = "http://viacep.com.br/ws/" + clienteDTO.getCep() + "/json/";
-		Map<String, String> params = new HashMap<String, String>();
-		EnderecoDTO enderecoDTO = restTemplate.getForObject(uri, EnderecoDTO.class, params);
-		BeanUtils.copyProperties(enderecoDTO, endereco);
-		endereco.setComplemento(clienteDTO.getComplemento());
-		endereco.setNumero(clienteDTO.getNumero());
-		cliente.setEndereco(endereco);
+		endereco.setCep(clienteDTO.getEndereco().getCep());
+		endereco.setLogradouro(clienteDTO.getEndereco().getLogradouro());
+		endereco.setComplemento(clienteDTO.getEndereco().getComplemento());
+		endereco.setBairro(clienteDTO.getEndereco().getBairro());
+		endereco.setLocalidade(clienteDTO.getEndereco().getLocalidade());
+		endereco.setUf(clienteDTO.getEndereco().getUf());
+		endereco.setNumero(clienteDTO.getEndereco().getNumero());
 		return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
 	}
 

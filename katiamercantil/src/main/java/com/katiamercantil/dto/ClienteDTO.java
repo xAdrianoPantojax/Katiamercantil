@@ -33,11 +33,6 @@ public class ClienteDTO {
 	
 	private Boolean status;
 	
-	private String cep;
-	
 	private Endereco endereco;
 	
-	private String numero;
-	
-	private String complemento;
 }
