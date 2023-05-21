@@ -1,8 +1,8 @@
 package com.katiamercantil.model;
 
+import com.katiamercantil.dto.ProdutoUpdateDTO;
 import com.katiamercantil.enums.Departamento;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +20,6 @@ public class Produto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_USUARIO")
 	private Long id;
 
 	private String codigo;
@@ -45,5 +44,52 @@ public class Produto {
 	private Departamento departamento;
 
 	private Long prateleira;
+
+	public void updateInfo(ProdutoUpdateDTO produtoUpdateDTO) {
+		if (produtoUpdateDTO.getCodigo()!= null) {
+			this.codigo = produtoUpdateDTO.getCodigo();
+		}
+
+		if (produtoUpdateDTO.getDescricao() != null) {
+			this.descricao = produtoUpdateDTO.getDescricao();
+		}
+
+		if (produtoUpdateDTO.getDataEntrada() != null) {
+			this.dataEntrada = produtoUpdateDTO.getDataEntrada();
+		}
+
+		if (produtoUpdateDTO.getValidade() != null) {
+			this.validade = produtoUpdateDTO.getValidade();
+		}
+
+		if (produtoUpdateDTO.getVolume() != null) {
+			this.volume = produtoUpdateDTO.getVolume();
+		}
+
+		if (produtoUpdateDTO.getQuantidade() != null) {
+			this.quantidade = produtoUpdateDTO.getQuantidade();
+		}
+
+		if (produtoUpdateDTO.getPrecoCusto() != null) {
+			this.precoCusto = produtoUpdateDTO.getPrecoCusto();
+		}
+
+		if (produtoUpdateDTO.getPrecoVenda() != null) {
+			this.precoVenda = produtoUpdateDTO.getPrecoVenda();
+		}
+
+		if (produtoUpdateDTO.getMarca() != null) {
+			this.marca = produtoUpdateDTO.getMarca();
+		}
+
+		if (produtoUpdateDTO.getDepartamento() != null) {
+			this.departamento = produtoUpdateDTO.getDepartamento();
+		}
+
+		if (produtoUpdateDTO.getPrateleira() != null) {
+			this.prateleira = produtoUpdateDTO.getPrateleira();
+		}
+	}
+
 
 }

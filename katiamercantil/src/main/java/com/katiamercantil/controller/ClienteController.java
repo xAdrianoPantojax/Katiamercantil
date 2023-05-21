@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.katiamercantil.dto.ClienteDTO;
+import com.katiamercantil.dto.ClienteUpdateDTO;
 import com.katiamercantil.model.Cliente;
 import com.katiamercantil.service.ClienteService;
+
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/cliente")
@@ -25,13 +29,15 @@ public class ClienteController {
 	private ClienteService clienteService;
 	
 	@PostMapping("/cadastrar")
-	public ResponseEntity<Object> cadastrarCliente(@RequestBody ClienteDTO clienteDTO){
+	@Transactional
+	public ResponseEntity<Object> cadastrarCliente(@RequestBody @Valid ClienteDTO clienteDTO){
 		return clienteService.cadastrarCliente(clienteDTO);
 	}
 	
-	@PutMapping("/atualizar/{id}")
-	public void atualizarCliente(@PathVariable("id") Long id, @RequestBody ClienteDTO clienteDTO) {
-		clienteService.atualizarCliente(id, clienteDTO);
+	@PutMapping("/atualizar")
+	@Transactional
+	public void atualizarCliente(@RequestBody ClienteUpdateDTO clienteDTO) {
+		clienteService.atualizarCliente(clienteDTO);
 	}
 	
 	@GetMapping("/listar")
