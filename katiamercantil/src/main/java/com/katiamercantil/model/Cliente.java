@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.katiamercantil.dto.ClienteUpdateDTO;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -54,6 +55,41 @@ public class Cliente implements UserDetails{
 	@Embedded
 	private Endereco endereco;
 
+
+	public void updateInfo(ClienteUpdateDTO clienteUpdateDTO){
+		
+		if (clienteUpdateDTO.getNome()!= null) {
+			this.nome = clienteUpdateDTO.getNome();
+		}
+
+		if (clienteUpdateDTO.getSobrenome() != null) {
+			this.sobrenome = clienteUpdateDTO.getSobrenome();
+		}
+
+		if (clienteUpdateDTO.getCpfCnpj() != null) {
+			this.cpfCnpj = clienteUpdateDTO.getCpfCnpj();
+		}
+
+		if (clienteUpdateDTO.getSexo() != null) {
+			this.sexo = clienteUpdateDTO.getSexo();
+		}
+
+		if (clienteUpdateDTO.getTelefone() != null) {
+			this.telefone = clienteUpdateDTO.getTelefone();
+		}
+
+		if (clienteUpdateDTO.getStatus() != null) {
+			this.status = clienteUpdateDTO.getStatus();
+		}
+
+		if (clienteUpdateDTO.getEndereco() != null) {
+			this.endereco.updateInfoEnd(clienteUpdateDTO.getEndereco());
+		}
+	}
+
+
+
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
@@ -93,5 +129,7 @@ public class Cliente implements UserDetails{
 		return true;
 	}
 	
+	
+
 	
 }

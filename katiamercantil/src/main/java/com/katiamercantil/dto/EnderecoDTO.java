@@ -24,4 +24,5 @@ public class EnderecoDTO {
 	private String uf;
 	
 	private String numero;
+	
 }

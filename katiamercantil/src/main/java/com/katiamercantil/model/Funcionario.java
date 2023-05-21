@@ -1,6 +1,7 @@
 package com.katiamercantil.model;
 
-import jakarta.persistence.Column;
+import com.katiamercantil.dto.FuncionarioUpdateDTO;
+
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +19,6 @@ public class Funcionario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_USUARIO")
 	private Long id;
 	
 	private String nome;
@@ -39,20 +39,67 @@ public class Funcionario {
 	
 	private String cargo;
 	
-	private String setor;
-	
 	private String email;
 	
 	private String senha;
-	
-	private String telefone;
 	
 	private String celular;
 	
 	private Boolean status;
 	
-	private Boolean administrador;
-	
 	@Embedded
 	private Endereco endereco;
+
+	public void updateInfo(FuncionarioUpdateDTO funcionarioUpdateDTO){
+		
+		if (funcionarioUpdateDTO.getNome() != null) {
+			this.nome = funcionarioUpdateDTO.getNome();
+		}
+
+		if (funcionarioUpdateDTO.getSobrenome() != null) {
+			this.sobrenome = funcionarioUpdateDTO.getSobrenome();
+		}
+
+		if (funcionarioUpdateDTO.getCpf() != null) {
+			this.cpf = funcionarioUpdateDTO.getCpf();
+		}
+
+		if (funcionarioUpdateDTO.getRg() != null) {
+			this.rg = funcionarioUpdateDTO.getRg();
+		}
+
+		if (funcionarioUpdateDTO.getSexo() != null) {
+			this.sexo = funcionarioUpdateDTO.getSexo();
+		}
+
+		if (funcionarioUpdateDTO.getDataRecisao() != null) {
+			this.dataRecisao = funcionarioUpdateDTO.getDataRecisao();
+		}
+
+		if (funcionarioUpdateDTO.getCargo() != null) {
+			this.cargo = funcionarioUpdateDTO.getCargo();
+		}
+
+		if (funcionarioUpdateDTO.getEmail() != null) {
+			this.email = funcionarioUpdateDTO.getEmail();
+		}
+
+		if (funcionarioUpdateDTO.getSenha() != null) {
+			this.senha = funcionarioUpdateDTO.getSenha();
+		}
+
+		if (funcionarioUpdateDTO.getCelular() != null) {
+			this.celular = funcionarioUpdateDTO.getCelular();
+		}
+
+		if (funcionarioUpdateDTO.getStatus() != null) {
+			this.status = funcionarioUpdateDTO.getStatus();
+		}
+
+		if (funcionarioUpdateDTO.getEndereco() != null) {
+			this.endereco.updateInfoEnd(funcionarioUpdateDTO.getEndereco());
+		}
+	
+	}
+
 }
